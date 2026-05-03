@@ -201,6 +201,14 @@ def login():
             success = True
         elif "account" in result_url:
             success = True
+        elif result_url.rstrip("/").endswith("betadash.lunes.host"):
+            # Root URL (https://betadash.lunes.host/) is the account page after login
+            success = True
+            print("[登录] 到达主页 (根路径登录成功)")
+        elif "Account Page" in page_title or ("Lunes Host" in page_title and "login" not in page_title.lower()):
+            # Fallback: page title indicates a logged-in page
+            success = True
+            print(f"[登录] 页面标题确认登录成功: {page_title}")
         elif "next=/servers" in result_url:
             print("[登录] 检测到重定向到服务器页面，等待重定向...")
             time.sleep(3)
